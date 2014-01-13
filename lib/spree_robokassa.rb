@@ -10,7 +10,7 @@ module SpreeRobokassa
       Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")) do |c|
         Rails.env.production? ? require(c) : load(c)
       end
-      config.spree.payment_methods += [ Gateway::Robokassa ]
+      config.spree.payment_methods += [ Spree::Gateway::Robokassa ]
     end
 
     config.to_prepare &method(:activate).to_proc
