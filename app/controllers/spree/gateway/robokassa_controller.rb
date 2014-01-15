@@ -21,7 +21,7 @@ module Spree
 
     def result
       if @order && @gateway && valid_signature?(@gateway.options[:password2])
-        payment = @order.payments.build(:payment_method => @order.payment_method)
+        payment = @order.payments.build(:payment_method_id => @order.available_payment_methods.first.id)
         payment.state = "completed"
         payment.amount = params["OutSum"].to_f
         payment.save
@@ -41,6 +41,10 @@ module Spree
         redirect_to order_path(@order), :notice => I18n.t("payment_success")
       else
         flash[:error] =  t("payment_fail")
+        
+        # Check vars
+        # 
+        flash[:error] = '@order.completed?=' + @order.completed?.to_s + ', @order.complete?=' + @order.complete?.to_s + ', valid_signature?=' + valid_signature?(@gateway.options[:password1]).to_s
         redirect_to root_url
       end
     end
