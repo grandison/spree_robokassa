@@ -22,7 +22,7 @@ module Spree
     def result
       if @order && @gateway && valid_signature?(@gateway.options[:password2])
         payment = @order.payments.build(:payment_method_id => @order.available_payment_methods.first.id)
-        payment.state = "completed"
+        # payment.state = "completed"
         payment.amount = params["OutSum"].to_f
         payment.save
         @order.save!
